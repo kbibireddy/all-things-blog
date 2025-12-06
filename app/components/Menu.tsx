@@ -11,6 +11,23 @@ interface MenuProps {
 }
 
 export default function Menu({ items, currentPath = [] }: MenuProps) {
+  // Track which top-level dropdown is open (only one at a time)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+  // Close dropdown when clicking outside any menu item
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node
+      const nav = document.querySelector('.nav')
+      if (nav && !nav.contains(target)) {
+        setOpenDropdown(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <nav className="nav">
       {items.map((item) => (
@@ -20,6 +37,8 @@ export default function Menu({ items, currentPath = [] }: MenuProps) {
           currentPath={currentPath}
           level={0}
           parentPath={[]}
+          openDropdown={openDropdown}
+          setOpenDropdown={setOpenDropdown}
         />
       ))}
     </nav>
@@ -31,26 +50,53 @@ interface MenuDropdownProps {
   currentPath: string[]
   level: number
   parentPath: string[]
+  openDropdown: string | null
+  setOpenDropdown: (path: string | null) => void
 }
 
-function MenuDropdown({ item, currentPath, level, parentPath }: MenuDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false)
+function MenuDropdown({ 
+  item, 
+  currentPath, 
+  level, 
+  parentPath,
+  openDropdown,
+  setOpenDropdown
+}: MenuDropdownProps) {
+  const [nestedOpen, setNestedOpen] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
+  // For top-level dropdowns, use shared state
+  // For nested dropdowns, use local state
+  const dropdownId = item.fullPath.join('/')
+  const isTopLevel = level === 0
+  const isOpen = isTopLevel 
+    ? openDropdown === dropdownId
+    : nestedOpen === dropdownId
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+  // Close nested dropdowns when parent closes
+  useEffect(() => {
+    if (!isTopLevel && openDropdown === null) {
+      setNestedOpen(null)
     }
-  }, [isOpen])
+  }, [openDropdown, isTopLevel])
+
+  const handleToggle = () => {
+    if (isTopLevel) {
+      // Top-level: close others when opening this one
+      setOpenDropdown(isOpen ? null : dropdownId)
+    } else {
+      // Nested: use local state
+      setNestedOpen(isOpen ? null : dropdownId)
+    }
+  }
+
+  const handleMouseEnter = () => {
+    if (isTopLevel && item.children && item.children.length > 0) {
+      // Only auto-open on hover for top-level items
+      setOpenDropdown(dropdownId)
+    }
+  }
 
   // Use fullPath from menu item for routing
   const href = '/' + item.fullPath.join('/')
@@ -66,11 +112,14 @@ function MenuDropdown({ item, currentPath, level, parentPath }: MenuDropdownProp
   if (hasChildren && item.children) {
     // It's a folder with children - show dropdown
     return (
-      <div className="nav-item-dropdown" ref={dropdownRef}>
+      <div 
+        className="nav-item-dropdown" 
+        ref={dropdownRef}
+      >
         <button
           className={`nav-link ${isActive ? 'active' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
-          onMouseEnter={() => level === 0 && setIsOpen(true)}
+          onClick={handleToggle}
+          onMouseEnter={handleMouseEnter}
         >
           {item.label}
           <span className="dropdown-arrow">▼</span>
@@ -84,6 +133,8 @@ function MenuDropdown({ item, currentPath, level, parentPath }: MenuDropdownProp
                 currentPath={currentPath.slice(1)}
                 level={level + 1}
                 parentPath={item.fullPath}
+                openDropdown={openDropdown}
+                setOpenDropdown={setOpenDropdown}
               />
             ))}
           </div>
@@ -96,7 +147,10 @@ function MenuDropdown({ item, currentPath, level, parentPath }: MenuDropdownProp
       <Link
         href={href}
         className={`nav-link ${isActive ? 'active' : ''}`}
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          // Close all dropdowns when navigating
+          setOpenDropdown(null)
+        }}
       >
         {item.label}
       </Link>
