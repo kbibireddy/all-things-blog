@@ -2,7 +2,7 @@
 
 December 15, 2024 • Karthik Bibireddy (AI Generated Text)
 
-[picture]
+![RSI Divergence Chart showing price making lower lows while RSI makes higher lows indicating bullish divergence](https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&h=400&fit=crop)
 
 ## Overview
 

@@ -2,7 +2,7 @@
 
 December 15, 2024 • Karthik Bibireddy (AI Generated Text)
 
-[picture]
+![Moving Average Crossover Chart showing 20-day and 50-day EMA with golden cross pattern](https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop)
 
 ## Overview
 

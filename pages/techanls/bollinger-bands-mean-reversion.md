@@ -2,7 +2,7 @@
 
 December 15, 2024 • Karthik Bibireddy (AI Generated Text)
 
-[picture]
+![Bollinger Bands Chart showing price touching upper and lower bands with mean reversion to middle band](https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop)
 
 ## Overview
 
