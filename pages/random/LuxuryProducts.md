@@ -26,4 +26,4 @@ Here is your updated GTM Campaign:
 > ### **Need a rapid response?** Chat directly with a human!
 > 
 > **Click to Connect:**
-> [<img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp Icon" width="40" height="40">](https://wa.me/15127079676?text=I%20want%20to%20start%20a%20chat.) **[](https://wa.me/15127079676?text=I%20want%20to%20start%20a%20chat.)**
+> [<img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp Icon" width="100" height="100">](https://wa.me/15127079676?text=I%20want%20to%20start%20a%20chat.)
