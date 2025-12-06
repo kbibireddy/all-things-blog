@@ -39,7 +39,7 @@ Since the specific logo file wasn't present, I opted to use a professional serif
 
 Here is your updated GTM Campaign:
 
-![Amazing Publicity GTM Campaign Collage](https://postimg.cc/vc08Jhf2)
+[![Gemini-Generated-Image-rjtejprjtejprjte-(1).png](https://i.postimg.cc/nhJsQwzx/Gemini-Generated-Image-rjtejprjtejprjte-(1).png)](https://postimg.cc/vc08Jhf2)
 
 ### Campaign Breakdown & Strategy
 
