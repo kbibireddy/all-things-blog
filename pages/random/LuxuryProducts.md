@@ -14,4 +14,16 @@ Here is your updated GTM Campaign:
 * **The "Corporate/Event" Shot (Audi/St. Regis):** I utilized the black promotional tent (which you uploaded) to show how "Amazing Publicity" handles high-end corporate events and valet services.
 * **The "Leisure" Shot (Novotel):** The white market umbrella offers a clean, modern look suitable for business-leisure hotels like Novotel.
 
-> Reach out to US : <link>
+
+
+[![outdoor-umbrella-edit.jpg](https://i.postimg.cc/t4KsbBKy/outdoor-umbrella-edit.jpg)](https://postimg.cc/21xkF7jX)
+
+
+
+## 📞 Get in Touch Instantly!
+
+
+> ### **Need a rapid response?** Chat directly with a human!
+> 
+> **Click to Connect:**
+> [<img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp Icon" width="40" height="40">](https://wa.me/15127079676?text=I%20want%20to%20start%20a%20chat.) **[](https://wa.me/15127079676?text=I%20want%20to%20start%20a%20chat.)**
