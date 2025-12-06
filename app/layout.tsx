@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'All Things Blog',
-  description: 'A blog about all things',
+  title: 'All Things Distributed',
+  description: 'Werner Vogels on building scalable and robust distributed systems',
 }
 
 export default function RootLayout({
