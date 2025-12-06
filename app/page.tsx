@@ -1,35 +1,34 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { readFile } from 'fs/promises'
-import { join } from 'path'
-
-async function getArticleContent() {
-  const filePath = join(process.cwd(), 'content', 'sample-article.md')
-  try {
-    const fileContents = await readFile(filePath, 'utf8')
-    return fileContents
-  } catch (error) {
-    return 'Article not found.'
-  }
-}
+import { getAllPageSlugs, getPagesStructure, buildMenuStructure, getPageContent } from '@/lib/pageUtils'
+import Menu from '@/app/components/Menu'
 
 export default async function Home() {
-  const articleContent = await getArticleContent()
-
+  // Get all pages and find the first one in 'home' directory
+  const slugs = await getAllPageSlugs()
+  const homeSlug = slugs.find(slug => slug[0] === 'home')
+  
+  // Get menu structure
+  const pagesStructure = await getPagesStructure()
+  const menuItems = buildMenuStructure(pagesStructure)
+  
+  // Try to load the first home page content, or first available page
+  const targetSlug = homeSlug || (slugs.length > 0 ? slugs[0] : null)
+  const articleContent = targetSlug ? await getPageContent(targetSlug) : null
+  
   return (
     <>
-      <nav className="nav">
-        <a href="/" className="nav-link">Home</a>
-        <a href="/random" className="nav-link">Random</a>
-      </nav>
-      
+      <Menu items={menuItems} currentPath={targetSlug || []} />
       <main className="main">
         <h1 className="site-title">all things blog</h1>
-        
         <article className="article">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {articleContent}
-          </ReactMarkdown>
+          {articleContent ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {articleContent}
+            </ReactMarkdown>
+          ) : (
+            <p>No pages found. Please add markdown files to the pages directory.</p>
+          )}
         </article>
       </main>
     </>
