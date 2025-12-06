@@ -56,7 +56,7 @@ function MenuDropdown({ item, currentPath, level, parentPath }: MenuDropdownProp
   const href = '/' + item.fullPath.join('/')
   
   // Check if current path matches this item
-  const pathnameSegments = pathname.split('/').filter(Boolean)
+  const pathnameSegments = pathname ? pathname.split('/').filter(Boolean) : []
   const isActive = pathname === href || 
     (pathnameSegments.length > 0 && pathnameSegments[0] === item.path) ||
     JSON.stringify(pathnameSegments) === JSON.stringify(item.fullPath)
