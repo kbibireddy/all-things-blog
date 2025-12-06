@@ -1,12 +1,3 @@
----
-title: "Behind the Scenes: AI Strategy for 'Amazing Publicity' GTM"
-date: 2025-12-05
-author: "Admin"
-categories: ["Case Study", "AI Logic", "Marketing Strategy"]
-tags: ["GTM", "Luxury Branding", "Prompt Engineering", "Visual Design"]
-description: "A deep dive into the AI reasoning process used to create the luxury Go-To-Market campaign for Amazing Publicity."
----
-
 # Decoding the Request: The "Amazing Publicity" Campaign
 
 Ever wonder how an AI processes a complex request involving branding, strategy, and visual design? Below is the internal log of how we moved from a simple "upgrade" request to a full luxury GTM strategy for **Amazing Publicity**.
