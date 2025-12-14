@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm'
 import { getPageContent, getAllPageSlugs } from '@/lib/pageUtils'
 import Menu from '@/app/components/Menu'
 import { getPagesStructure, buildMenuStructure } from '@/lib/pageUtils'
+import { notFound } from 'next/navigation'
 
 interface PageProps {
   params: {
@@ -17,30 +18,23 @@ export async function generateStaticParams() {
   }))
 }
 
+// Ensure only `generateStaticParams()` routes are generated (important for `output: 'export'`).
+export const dynamicParams = false
+
 export default async function Page({ params }: PageProps) {
   const pathSegments = Array.isArray(params.slug) ? params.slug : []
   const articleContent = await getPageContent(pathSegments)
   
+  if (!articleContent) {
+    notFound()
+  }
+
   // Get menu structure for navigation
   const pagesStructure = await getPagesStructure()
   const menuItems = buildMenuStructure(pagesStructure)
 
   // Determine current path for active menu highlighting
   const currentPath = pathSegments.length > 0 ? pathSegments : []
-
-  if (!articleContent) {
-    return (
-      <>
-        <Menu items={menuItems} currentPath={currentPath} />
-        <main className="main">
-          <h1 className="site-title">all things blog</h1>
-          <article className="article">
-            <p>Page not found.</p>
-          </article>
-        </main>
-      </>
-    )
-  }
 
   return (
     <>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { MenuItem } from '@/lib/pageUtils'
+import type { MenuItem } from '@/lib/pageUtils'
 
 interface MenuProps {
   items: MenuItem[]
