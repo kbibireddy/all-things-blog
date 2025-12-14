@@ -1,5 +1,7 @@
 import { readdir, stat, readFile } from 'fs/promises'
 import { join } from 'path'
+// @ts-ignore - notebookjs doesn't have TypeScript types
+const nb = require('notebookjs')
 
 export interface PageItem {
   name: string
@@ -94,18 +96,28 @@ export function getPagePath(segments: string[]): string {
   return join(process.cwd(), 'pages', ...segments) + '.md'
 }
 
+export interface PageContent {
+  content: string
+  fileType: 'md' | 'ipynb' | 'csv'
+}
+
 /**
  * Reads file content by path segments (supports .md, .ipynb, .csv)
+ * Returns content and file type
  */
-export async function getPageContent(pathSegments: string[]): Promise<string | null> {
+export async function getPageContent(pathSegments: string[]): Promise<PageContent | null> {
   const basePath = join(process.cwd(), 'pages', ...pathSegments)
-  const extensions = ['.md', '.ipynb', '.csv']
+  const extensions: Array<{ ext: string; type: 'md' | 'ipynb' | 'csv' }> = [
+    { ext: '.md', type: 'md' },
+    { ext: '.ipynb', type: 'ipynb' },
+    { ext: '.csv', type: 'csv' }
+  ]
   
-  for (const ext of extensions) {
+  for (const { ext, type } of extensions) {
     try {
       const filePath = basePath + ext
       const content = await readFile(filePath, 'utf8')
-      return content
+      return { content, fileType: type }
     } catch (error) {
       // Try next extension
       continue
@@ -200,4 +212,18 @@ export async function getAllPageSlugs(): Promise<string[][]> {
   
   await traverse(pagesPath)
   return slugs
+}
+
+/**
+ * Renders a Jupyter notebook JSON to HTML string
+ */
+export function renderNotebook(notebookJson: any): string {
+  try {
+    const notebook = nb.parse(notebookJson)
+    const renderedElement = notebook.render()
+    return renderedElement.outerHTML
+  } catch (error) {
+    console.error('Error rendering notebook:', error)
+    throw error
+  }
 }

@@ -228,3 +228,110 @@ body {
     font-size: 1.75rem;
   }
 }
+
+/* Jupyter Notebook Styles */
+.notebook-content {
+  width: 100%;
+}
+
+.notebook-content .jp-Notebook {
+  padding: 0;
+}
+
+.notebook-content .jp-Cell {
+  margin: 1em 0;
+  padding: 0.5em;
+}
+
+.notebook-content .jp-Cell-inputWrapper {
+  margin-bottom: 0.5em;
+}
+
+.notebook-content .jp-Cell-outputWrapper {
+  margin-top: 0.5em;
+}
+
+.notebook-content .jp-InputArea {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 0.5em;
+  background: #f9f9f9;
+}
+
+.notebook-content .jp-InputArea-editor {
+  font-family: 'Courier New', monospace;
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+.notebook-content .jp-OutputArea {
+  margin-top: 0.5em;
+  padding: 0.5em;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.notebook-content .jp-OutputArea-output {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.notebook-content pre {
+  margin: 0.5em 0;
+  padding: 0.5em;
+  background: #f5f5f5;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 10pt;
+  line-height: 1.4;
+}
+
+.notebook-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+}
+
+.notebook-content .jp-MarkdownCell {
+  margin: 1em 0;
+}
+
+.notebook-content .jp-MarkdownCell p {
+  margin: 0.5em 0;
+  text-indent: 0;
+}
+
+.notebook-content .jp-MarkdownCell h1,
+.notebook-content .jp-MarkdownCell h2,
+.notebook-content .jp-MarkdownCell h3,
+.notebook-content .jp-MarkdownCell h4 {
+  margin: 1em 0 0.5em 0;
+  text-align: left;
+}
+
+.notebook-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+}
+
+.notebook-content table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+}
+
+.notebook-content table th,
+.notebook-content table td {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+  text-align: left;
+}
+
+.notebook-content table th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
