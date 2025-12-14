@@ -11,7 +11,7 @@ body {
 }
 
 body {
-  font-family: 'Times New Roman', Times, Georgia, 'Liberation Serif', serif;
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
@@ -110,7 +110,7 @@ body {
   color: #000000;
   line-height: 1.8;
   text-align: justify;
-  font-family: 'Times New Roman', Times, Georgia, 'Liberation Serif', serif;
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 .article h3 {
