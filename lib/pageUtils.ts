@@ -40,10 +40,13 @@ export async function getPagesStructure(baseDir: string = 'pages'): Promise<Page
           children: children.length > 0 ? children : undefined,
           fullPath: fullPath
         })
-      } else if (entry.endsWith('.md')) {
+      } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
+        // Remove extension to get the base name
+        const extension = entry.match(/\.(md|ipynb|csv)$/)?.[1] || 'md'
+        const baseName = entry.replace(/\.(md|ipynb|csv)$/, '')
         items.push({
-          name: entry.replace('.md', ''),
-          path: entry.replace('.md', ''),
+          name: baseName,
+          path: baseName,
           type: 'file',
           fullPath: fullPath
         })
@@ -85,23 +88,32 @@ export function buildMenuStructure(pages: PageItem[], parentPath: string[] = [])
 
 /**
  * Gets the full path for a page given a path array (e.g., ['home', 'article'])
+ * Note: This defaults to .md extension. Use getPageContent() which tries all extensions.
  */
 export function getPagePath(segments: string[]): string {
   return join(process.cwd(), 'pages', ...segments) + '.md'
 }
 
 /**
- * Reads markdown file content by path segments
+ * Reads file content by path segments (supports .md, .ipynb, .csv)
  */
 export async function getPageContent(pathSegments: string[]): Promise<string | null> {
-  try {
-    const filePath = getPagePath(pathSegments)
-    const content = await readFile(filePath, 'utf8')
-    return content
-  } catch (error) {
-    console.error(`Error reading page content:`, error)
-    return null
+  const basePath = join(process.cwd(), 'pages', ...pathSegments)
+  const extensions = ['.md', '.ipynb', '.csv']
+  
+  for (const ext of extensions) {
+    try {
+      const filePath = basePath + ext
+      const content = await readFile(filePath, 'utf8')
+      return content
+    } catch (error) {
+      // Try next extension
+      continue
+    }
   }
+  
+  console.error(`Error reading page content for path: ${pathSegments.join('/')}`)
+  return null
 }
 
 /**
@@ -142,10 +154,11 @@ export async function getAllMarkdownFiles(basePath: string): Promise<string[]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath)
-        } else if (entry.endsWith('.md')) {
+        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
           // Get relative path from pages directory
           const relativePath = fullPath.replace(join(process.cwd(), 'pages') + '/', '')
-          files.push(relativePath.replace('.md', ''))
+          // Remove extension
+          files.push(relativePath.replace(/\.(md|ipynb|csv)$/, ''))
         }
       }
     } catch (error) {
@@ -175,8 +188,8 @@ export async function getAllPageSlugs(): Promise<string[][]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath, [...currentPath, entry])
-        } else if (entry.endsWith('.md')) {
-          const slug = entry.replace('.md', '')
+        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
+          const slug = entry.replace(/\.(md|ipynb|csv)$/, '')
           slugs.push([...currentPath, slug])
         }
       }
