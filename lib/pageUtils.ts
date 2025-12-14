@@ -42,10 +42,9 @@ export async function getPagesStructure(baseDir: string = 'pages'): Promise<Page
           children: children.length > 0 ? children : undefined,
           fullPath: fullPath
         })
-      } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
-        // Remove extension to get the base name
-        const extension = entry.match(/\.(md|ipynb|csv)$/)?.[1] || 'md'
-        const baseName = entry.replace(/\.(md|ipynb|csv)$/, '')
+      } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+        // Remove extension to get the base name (exclude .csv files from menu)
+        const baseName = entry.replace(/\.(md|ipynb)$/, '')
         items.push({
           name: baseName,
           path: baseName,
@@ -166,11 +165,11 @@ export async function getAllMarkdownFiles(basePath: string): Promise<string[]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath)
-        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
-          // Get relative path from pages directory
+        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+          // Get relative path from pages directory (exclude .csv files)
           const relativePath = fullPath.replace(join(process.cwd(), 'pages') + '/', '')
           // Remove extension
-          files.push(relativePath.replace(/\.(md|ipynb|csv)$/, ''))
+          files.push(relativePath.replace(/\.(md|ipynb)$/, ''))
         }
       }
     } catch (error) {
@@ -200,8 +199,9 @@ export async function getAllPageSlugs(): Promise<string[][]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath, [...currentPath, entry])
-        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb') || entry.endsWith('.csv')) {
-          const slug = entry.replace(/\.(md|ipynb|csv)$/, '')
+        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+          // Exclude .csv files from static generation
+          const slug = entry.replace(/\.(md|ipynb)$/, '')
           slugs.push([...currentPath, slug])
         }
       }
