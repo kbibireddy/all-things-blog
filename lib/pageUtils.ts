@@ -1,7 +1,5 @@
 import { readdir, stat, readFile } from 'fs/promises'
 import { join } from 'path'
-// @ts-ignore - notebookjs doesn't have TypeScript types
-const nb = require('notebookjs')
 
 export interface PageItem {
   name: string
@@ -42,9 +40,9 @@ export async function getPagesStructure(baseDir: string = 'pages'): Promise<Page
           children: children.length > 0 ? children : undefined,
           fullPath: fullPath
         })
-      } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+      } else if (entry.endsWith('.md') || entry.endsWith('.html')) {
         // Remove extension to get the base name (exclude .csv files from menu)
-        const baseName = entry.replace(/\.(md|ipynb)$/, '')
+        const baseName = entry.replace(/\.(md|html)$/, '')
         items.push({
           name: baseName,
           path: baseName,
@@ -97,18 +95,18 @@ export function getPagePath(segments: string[]): string {
 
 export interface PageContent {
   content: string
-  fileType: 'md' | 'ipynb' | 'csv'
+  fileType: 'md' | 'html' | 'csv'
 }
 
 /**
- * Reads file content by path segments (supports .md, .ipynb, .csv)
+ * Reads file content by path segments (supports .md, .html, .csv)
  * Returns content and file type
  */
 export async function getPageContent(pathSegments: string[]): Promise<PageContent | null> {
   const basePath = join(process.cwd(), 'pages', ...pathSegments)
-  const extensions: Array<{ ext: string; type: 'md' | 'ipynb' | 'csv' }> = [
+  const extensions: Array<{ ext: string; type: 'md' | 'html' | 'csv' }> = [
     { ext: '.md', type: 'md' },
-    { ext: '.ipynb', type: 'ipynb' },
+    { ext: '.html', type: 'html' },
     { ext: '.csv', type: 'csv' }
   ]
   
@@ -165,11 +163,11 @@ export async function getAllMarkdownFiles(basePath: string): Promise<string[]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath)
-        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+        } else if (entry.endsWith('.md') || entry.endsWith('.html')) {
           // Get relative path from pages directory (exclude .csv files)
           const relativePath = fullPath.replace(join(process.cwd(), 'pages') + '/', '')
           // Remove extension
-          files.push(relativePath.replace(/\.(md|ipynb)$/, ''))
+          files.push(relativePath.replace(/\.(md|html)$/, ''))
         }
       }
     } catch (error) {
@@ -199,9 +197,9 @@ export async function getAllPageSlugs(): Promise<string[][]> {
         
         if (stats.isDirectory()) {
           await traverse(fullPath, [...currentPath, entry])
-        } else if (entry.endsWith('.md') || entry.endsWith('.ipynb')) {
+        } else if (entry.endsWith('.md') || entry.endsWith('.html')) {
           // Exclude .csv files from static generation
-          const slug = entry.replace(/\.(md|ipynb)$/, '')
+          const slug = entry.replace(/\.(md|html)$/, '')
           slugs.push([...currentPath, slug])
         }
       }
@@ -214,16 +212,3 @@ export async function getAllPageSlugs(): Promise<string[][]> {
   return slugs
 }
 
-/**
- * Renders a Jupyter notebook JSON to HTML string
- */
-export function renderNotebook(notebookJson: any): string {
-  try {
-    const notebook = nb.parse(notebookJson)
-    const renderedElement = notebook.render()
-    return renderedElement.outerHTML
-  } catch (error) {
-    console.error('Error rendering notebook:', error)
-    throw error
-  }
-}

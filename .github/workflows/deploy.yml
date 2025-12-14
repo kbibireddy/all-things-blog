@@ -30,6 +30,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install jupyter nbconvert
+        run: |
+          pip install nbconvert
+
+      - name: Convert .ipynb files to .html
+        run: |
+          find pages -name "*.ipynb" -type f | while read notebook; do
+            notebook_dir="$(dirname "$notebook")"
+            notebook_basename="$(basename "$notebook" .ipynb)"
+            # Convert notebook to HTML in the same directory with the same base name
+            jupyter nbconvert --to html "$notebook" --output-dir="$notebook_dir" --output "$notebook_basename"
+            echo "Converted $notebook to $notebook_dir/$notebook_basename.html"
+          done
+
       - name: Build
         run: npm run build
         env:

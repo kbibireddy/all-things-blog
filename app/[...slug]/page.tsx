@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { getPageContent, getAllPageSlugs, renderNotebook } from '@/lib/pageUtils'
+import { getPageContent, getAllPageSlugs } from '@/lib/pageUtils'
 import Menu from '@/app/components/Menu'
 import { getPagesStructure, buildMenuStructure } from '@/lib/pageUtils'
 
@@ -45,22 +45,14 @@ export default async function Page({ params }: PageProps) {
   // Handle different file types
   let content: React.ReactNode = null
 
-  if (pageData.fileType === 'ipynb') {
-    try {
-      // Parse the notebook JSON and render to HTML
-      const notebookJson = JSON.parse(pageData.content)
-      const renderedHtml = renderNotebook(notebookJson)
-      
-      content = (
-        <div 
-          className="notebook-content"
-          dangerouslySetInnerHTML={{ __html: renderedHtml }}
-        />
-      )
-    } catch (error) {
-      console.error('Error rendering notebook:', error)
-      content = <p>Error rendering notebook file.</p>
-    }
+  if (pageData.fileType === 'html') {
+    // Render HTML content directly
+    content = (
+      <div 
+        className="html-content"
+        dangerouslySetInnerHTML={{ __html: pageData.content }}
+      />
+    )
   } else if (pageData.fileType === 'csv') {
     // For CSV files, display as preformatted text
     content = (
