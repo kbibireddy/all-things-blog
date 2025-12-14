@@ -23,9 +23,27 @@ export default async function Home() {
         <h1 className="site-title">all things blog</h1>
         <article className="article">
           {articleContent ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {articleContent}
-            </ReactMarkdown>
+            <>
+              {articleContent.fileType === 'html' ? (
+                <div 
+                  className="html-content"
+                  dangerouslySetInnerHTML={{ __html: articleContent.content }}
+                />
+              ) : articleContent.fileType === 'csv' ? (
+                <pre className="csv-content" style={{ 
+                  whiteSpace: 'pre-wrap', 
+                  fontFamily: 'monospace',
+                  fontSize: '11pt',
+                  lineHeight: '1.6'
+                }}>
+                  {articleContent.content}
+                </pre>
+              ) : (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {articleContent.content}
+                </ReactMarkdown>
+              )}
+            </>
           ) : (
             <p>No pages found. Please add markdown files to the pages directory.</p>
           )}
